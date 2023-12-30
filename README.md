@@ -18,14 +18,77 @@ cyw43_t *self = &cyw43_state;
 
 Debugging can be set at three points in the CYW43439 code.
 
-### SPI driver ###
-
-
-### CYW43 driver ###
 
 ### Shared bus driver ###
 
+For debugging, cyw logs can be set like this.   
+In ```pico-sdk/src/rp2_common/pico_cyw43_driver/cybt_shared_bus/cybt_shared_bus_driver.``` add
+```
+        #undef NDEBUG
+        #define CYBT_DEBUG 1
+```
 
+### SPI driver ###
+
+SPI logs can be set like this.   
+In ```pico-sdk/src/rp2_common/pico_cyw43_driver/cyw43_bus_pio_spi.c``` add
+
+```
+#define ENABLE_SPI_DUMPING 1
+```
+
+and change line 55 from:
+
+```
+static bool enable_spi_packet_dumping; // set to true to dump
+```
+
+to:
+    
+```
+bool enable_spi_packet_dumping; // set to true to dump
+```
+
+so that it can be accessed from your program.   
+
+### CYW43 driver ###
+
+Edit ``pico-sdk/lib/cyw43-driver/src/cyw43_config.h``` line 129 to add
+
+```
+#undef NDEBUG
+```
+
+Or edit the DEBUG definitions so that they print when you want them to.
+
+```
+#ifndef CYW43_PRINTF
+#include <stdio.h>
+#define CYW43_PRINTF(...) void(0)     
+//#define CYW43_PRINTF(...) printf(__VA_ARGS__)
+#endif
+
+#ifndef CYW43_VDEBUG
+#define CYW43_VDEBUG(...) (void)0
+#define CYW43_VERBOSE_DEBUG 0
+#endif
+
+#ifndef CYW43_DEBUG
+//#ifdef NDEBUG
+//#define CYW43_DEBUG(...) (void)0
+//#else
+#define CYW43_DEBUG(...) CYW43_PRINTF(__VA_ARGS__)
+//#endif
+#endif
+
+#ifndef CYW43_INFO
+#define CYW43_INFO(...) CYW43_PRINTF(__VA_ARGS__)
+#endif
+
+#ifndef CYW43_WARN
+#define CYW43_WARN(...) CYW43_PRINTF("[CYW43] " __VA_ARGS__)
+#endif
+```
 
 
 ## Amending code in cyw43_bus_pio_spi.c to NOT require self - deprecated ##
