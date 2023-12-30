@@ -19,7 +19,7 @@ cyw43_t *self = &cyw43_state;
 Debugging can be set at three points in the CYW43439 code.
 
 
-### Shared bus driver ###
+### 1 Shared bus driver ###
 
 For debugging, cyw logs can be set like this.   
 In ```pico-sdk/src/rp2_common/pico_cyw43_driver/cybt_shared_bus/cybt_shared_bus_driver.``` add
@@ -28,7 +28,7 @@ In ```pico-sdk/src/rp2_common/pico_cyw43_driver/cybt_shared_bus/cybt_shared_bus_
         #define CYBT_DEBUG 1
 ```
 
-### SPI driver ###
+### 2 SPI driver ###
 
 SPI logs can be set like this.   
 In ```pico-sdk/src/rp2_common/pico_cyw43_driver/cyw43_bus_pio_spi.c``` add
@@ -51,7 +51,7 @@ bool enable_spi_packet_dumping; // set to true to dump
 
 so that it can be accessed from your program.   
 
-### CYW43 driver ###
+### 3 CYW43 driver ###
 
 Edit ``pico-sdk/lib/cyw43-driver/src/cyw43_config.h``` line 129 to add
 
