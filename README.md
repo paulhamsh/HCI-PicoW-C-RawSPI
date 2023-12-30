@@ -19,11 +19,10 @@ cyw43_deinit              if (self == NULL) self = saved_self;
 start_spi_comms           if (self == NULL) self = saved_self;
 
 cyw43_spi_transfer        if (self == NULL) self = saved_self;
-
 _cyw43_read_reg           if (self == NULL) self = saved_self; 
 _cyw43_write_reg          if (self == NULL) self = saved_self;
-read_reg_u32_swap          if (self == NULL) self = saved_self;
+read_reg_u32_swap         if (self == NULL) self = saved_self;
 write_reg_u32_swap        if (self == NULL) self = saved_self;
-cyw43_read_bytes        if (self == NULL) self = saved_self;
-cyw43_write_bytes        if (self == NULL) self = saved_self;
+cyw43_read_bytes          if (self == NULL) self = saved_self;
+cyw43_write_bytes         if (self == NULL) self = saved_self;
 ```
