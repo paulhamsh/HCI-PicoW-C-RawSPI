@@ -34,6 +34,28 @@ typedef struct _cyw43_ll_t {
 
 This is the same size as ```cyw43_int_t``` as checked by an ```assert``` in ```cyw43_internal.h```.   
 
+There are macros in ```cyw43_ll.c``` to convert between ```cyw43_int_t``` and ```cyw43_ll_t```.
+
+```
+#define CYW_INT_FROM_LL(ll) ((cyw43_int_t *)(ll))
+#define CYW_INT_TO_LL(in) ((cyw43_ll_t *)(in))
+```
+
+In ```cyw43.h``` cyw43_t is defined, and the first item is of type cyw43_ll_t, so ```cyw43_state``` is of type ```cyw43_t``` and the first item in that structure is of type ```cyw43_ll_t``` which is of the same form as ```cyw43_int_t``` which is what the SPI functions use.
+
+```
+typedef struct _cyw43_t {
+    cyw43_ll_t cyw43_ll;
+
+    // lines removed
+
+    #if CYW43_ENABLE_BLUETOOTH
+    bool bt_loaded;
+    #endif
+} cyw43_t;
+
+extern cyw43_t cyw43_state;
+```
 
 
 ## Printing debug information ##
