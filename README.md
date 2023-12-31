@@ -16,7 +16,7 @@ After set-up, it then uses the ```cyw43_spi_transfer``` function found in the pi
 
 ## Use &cyw43_state as self ##
 
-The calls to SPI functions need a ```self``` variable - this maps to a pointer to ```&cvyw43_state``` (as defined ```cyw43.h``` in georgerobotics/cyw43-driver) and is set in cyw43_ctrl.c in line 229:
+The calls to SPI functions need a ```self``` variable - this maps to a pointer to ```&cvyw43_state``` (as defined ```cyw43.h``` in georgerobotics/cyw43-driver) and is set in ```cyw43_ctrl.c``` (line 229).   
 
 ```
 cyw43_t *self = &cyw43_state;
