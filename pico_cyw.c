@@ -150,7 +150,7 @@ void read_buffer_pointers() {
 }
 
 int main() {
-    uint32_t bufsend[50];
+    uint32_t bufsend[BUF_SIZE];
     uint32_t val;
     uint8_t *buffer;
 
