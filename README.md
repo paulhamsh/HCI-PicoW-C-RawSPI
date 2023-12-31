@@ -1,18 +1,28 @@
 # HCI-PicoW-C-RawSPI
 HCI PicoW layer in C using raw SPI access to the CYW43439 chip in the Pico W - so this is the SPI layer below the HCI layer.   
 
-For completeness, the HCI layer is used in ```HCI-PicoW-C``` and the functions found in the CYW43 driver (https://github.com/georgerobotics/cyw43-driver/tree/main), in ``` cyw43_ctrl.c```.
+This code uses the existing functions to set up the CWY43439 chip - because this uses undocumented features and addresses, and reverse engineering would take a long time for minimal benefit.  These are
 
-This code uses the existing functions to set up the CWY43439 chip - because this uses undocumented features and addresses, and reverse engineering would take a long time for minimal benefit.   
+```
+cyw43_arch_init();
+cyw43_init(&cyw43_state);
+cyw43_bluetooth_hci_init();  // loads the firmware straight away
+```
 
-After set-up, it then uses the ```cyw43_spi_transfer``` function found in the pico-sdk (https://github.com/raspberrypi/pico-sdk/blob/master/src/rp2_common/pico_cyw43_driver/cyw43_bus_pio_spi.c). This uses PIO to talk directly to the CYW43439 using the half-duplex SPI channel between the two chips.   
+After set-up, it then uses the ```cyw43_spi_transfer``` function found in the pico-sdk (pico-sdk/src/rp2_common/pico_cyw43_driver/cyw43_bus_pio_spi.c). This uses PIO to talk directly to the CYW43439 using the half-duplex SPI channel between the two chips.   
+
+(For reference, HCI layer access is used in repo ```HCI-PicoW-C``` and this uses the functions found in the CYW43 driver (georgerobotics/cyw43-driver), in ```cyw43_ctrl.c```).   
+
 
 ## Use &cyw43_state as self ##
 
-The calls to SPI functions need a ```self``` variable - this is just a pointer to ```&vyw43_state``` (as defined and set in ```cyw43_driver.c``` in ).  
+The calls to SPI functions need a ```self``` variable - this maps to a pointer to ```&cvyw43_state``` (as defined ```cyw43.h``` in georgerobotics/cyw43-driver) and is set in cyw43_ctrl.c in line 229:
+
 ```
 cyw43_t *self = &cyw43_state;
 ```
+
+The function calls in ```cyw43_bus_pio_spi.c``` actually use self as a pointer to cyw43_int_t (```cyw43_int_t *self```).  So I have changed them to ```void *``` in the interest of simplicity, but the function calls use ```&cyw43_state``` as the first parameter.   
 
 ## Printing debug information ##
 
@@ -111,12 +121,4 @@ read_reg_u32_swap         if (self == NULL) self = saved_self;
 write_reg_u32_swap        if (self == NULL) self = saved_self;
 cyw43_read_bytes          if (self == NULL) self = saved_self;
 cyw43_write_bytes         if (self == NULL) self = saved_self;
-```
-
-And the drivers are initialised with the following calls.   
-
-```
-cyw43_arch_init();
-cyw43_init(&cyw43_state);
-cyw43_bluetooth_hci_init();  // loads the firmware straight away
 ```
