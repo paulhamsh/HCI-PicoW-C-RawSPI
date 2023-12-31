@@ -24,6 +24,18 @@ cyw43_t *self = &cyw43_state;
 
 The function calls in ```cyw43_bus_pio_spi.c``` actually use self as a pointer to cyw43_int_t (```cyw43_int_t *self```).  So I have changed them to ```void *``` in the interest of simplicity, but the function calls use ```&cyw43_state``` as the first parameter.   
 
+In cyw43_driver/cyw43_ll.h, self  is defined as ```cyw43_ll_t *```
+
+```
+typedef struct _cyw43_ll_t {
+    uint32_t opaque[CYW43_LL_STATE_SIZE_WORDS]; // note: array of words
+} cyw43_ll_t;
+```
+
+This is the same size as ```cyw43_int_t``` as checked by an ```assert``` in ```cyw43_internal.h```.   
+
+
+
 ## Printing debug information ##
 
 Debugging can be set at three points in the CYW43439 code.
