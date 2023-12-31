@@ -24,7 +24,7 @@ cyw43_t *self = &cyw43_state;
 
 The function calls in ```cyw43_bus_pio_spi.c``` actually use self as a pointer to cyw43_int_t (```cyw43_int_t *self```).  So I have changed them to ```void *``` in the interest of simplicity, but the function calls use ```&cyw43_state``` as the first parameter.   
 
-In cyw43_driver/cyw43_ll.h, self  is defined as ```cyw43_ll_t *```
+In ```cyw43_driver/cyw43_ll.h```, ```self```  is defined as ```cyw43_ll_t *```
 
 ```
 typedef struct _cyw43_ll_t {
